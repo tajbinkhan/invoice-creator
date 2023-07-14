@@ -1,0 +1,32 @@
+{% extends 'base/index.html' %}
+{% load crispy_forms_tags %}
+
+{% block head_title %} Description Form {% endblock %}
+{% block breadcrumb %} Description Form {% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-body">
+		<h4 class="card-title">{{ head_title }}</h4>
+		<p class="subtitle">You can <span style="text-transform: lowercase;">{{ head_title }}</span> from here.</p>
+		<hr class="mb-4">
+		{{ form.media }}
+		<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<div class="row">
+				<div class="col-xl-12">
+					<div class="form-group mb-3">
+						{{ form.beneficiary|as_crispy_field }}
+					</div>
+					<div class="form-group mb-3">
+						{{ form.terms_conditions|as_crispy_field }}
+					</div>
+				</div>
+			</div>
+			<button class="btn btn-primary waves-effect waves-light w-md">{{ button_name }}</button>
+		</form>
+	</div>
+</div>
+
+{% endblock %}

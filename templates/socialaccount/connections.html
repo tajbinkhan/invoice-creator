@@ -1,0 +1,84 @@
+{% extends "base/index.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Account Connections" %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	{% include 'profile/information.html' %}
+	<div class="col-xl-9">
+		<div class="card">
+			<div class="card-body">
+				<h4><i class="fas fa-network-wired
+					me-2"></i> {% trans "Account Connections" %}</h4>
+				{% if form.accounts %}
+				<p>{% blocktrans %}You can sign in to your account using any of the following third party
+					accounts:{% endblocktrans %}</p>
+
+				<form action="{% url 'socialaccount_connections' %}" method="post">
+					{% csrf_token %}
+					<fieldset>
+						{% if form.non_field_errors %}
+						{% for error in form.non_field_errors %}
+						<div class="alert alert-danger">{{ error|striptags }} You can set password from <a
+								href="{% url 'account_set_password' %}" class="alert-link">here</a>.</div>
+						{% endfor %}
+						{% endif %}
+
+
+						<div class="table-responsive">
+							<table class="table table-dark mb-0">
+
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Social Network</th>
+										<th>Account</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for base_account in form.accounts %}
+									{% with base_account.get_provider_account as account %}
+									<label for="id_account_{{ base_account.id }}">
+										<tr>
+											<th scope="row">
+												<input id="id_account_{{ base_account.id }}" type="radio" name="account"
+													value="{{ base_account.id }}" />
+											</th>
+											<td><span
+													class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}}</span>
+											</td>
+											<td>
+												{{ account }}
+											</td>
+										</tr>
+									</label>
+									{% endwith %}
+									{% endfor %}
+								</tbody>
+							</table>
+							<button type="submit"
+								class="primaryAction btn btn-danger waves-effect waves-light w-md my-3">{% trans 'Remove' %}</button>
+						</div>
+					</fieldset>
+				</form>
+
+				{% else %}
+				<p>{% trans 'You currently have no social network accounts connected to this account.' %}</p>
+				{% endif %}
+
+				<h2>{% trans 'Add a 3rd Party Account' %}</h2>
+
+				{% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+
+				{% include "socialaccount/snippets/login_extra.html" %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% include "socialaccount/snippets/login_extra.html" %}
+
+{% endblock %}

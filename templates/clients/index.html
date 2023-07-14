@@ -1,0 +1,104 @@
+{% extends 'base/index.html' %}
+{% load custom_filters %}
+{% block head_title %} Clients {% endblock %}
+{% block breadcrumb %} Clients {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="col-9">
+						<h4 class="card-title">List of Clients</h4>
+						<p class="card-subtitle">
+							Here is the list of clients. To add a new client, click on
+							<a href="{% url 'add_client' %}">Add Client</a>.
+						</p>
+					</div>
+					<div class="col-3">
+						<a href="{% url 'add_client' %}" class="btn btn-primary float-end waves-effect waves-light">Add New
+							Client</a>
+					</div>
+				</div>
+				<hr class="mb-4" />
+
+				<table id="clientData" class="table table-bordered dt-responsive nowrap w-100">
+					<thead>
+						<tr>
+							<th>Client Name</th>
+							<th>Office Address</th>
+							<th>Updated</th>
+							<th>Created</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+	var table = $("#clientData").DataTable({
+		lengthMenu: [10, 20, 30, 40, 50],
+		responsive: true,
+		serverSide: false,
+		order: [
+			[3, "desc"]
+		],
+		ordering: true,
+		ajax: {
+			url: "{% url 'clients_api' %}",
+		},
+		columnDefs: [{
+			targets: 4,
+			orderable: false,
+		}, ],
+		columns: [{
+				data: "client_name",
+				searchable: true,
+			},
+			{
+				data: "office_address",
+				searchable: true,
+			},
+			{
+				data: "updated_at",
+				searchable: true,
+			},
+			{
+				data: "created_at",
+				searchable: true,
+			},
+			{
+				data: null,
+				render: function (data, type, row, meta) {
+					var client_id = row.client_id;
+					var url = `/clients/update/${client_id}/`;
+					return `
+					<a href='${url}' class="btn btn-success waves-effect waves-light">
+						<i class="mdi mdi-pencil"></i>
+					</a>
+					<form id="delete-form" method="POST" action="/clients/delete/${row.client_id}/">
+						{% csrf_token %}
+						<button type="button" class="btn btn-danger waves-effect waves-light" onclick="handleDelete('${row.client_name}')"><i class="mdi mdi-trash-can"></i></button>
+					</form>`;
+				},
+				searchable: false,
+			},
+		],
+	});
+
+	$(".dataTables_length select").addClass("form-select form-select-sm");
+</script>
+
+{% endblock %}

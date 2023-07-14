@@ -1,0 +1,196 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: "Courier New", monospace;
+	margin: auto;
+}
+#htmlContent {
+	border: 1px solid #c5c5c52e;
+	width: 842px;
+	height: 1156px;
+	background-size: 64%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+h2 {
+	text-transform: uppercase;
+	font-family: "Montserrat", sans-serif;
+}
+p,
+td,
+tr {
+	font-size: 16px;
+}
+.parent-element {
+	width: 100%;
+	position: relative;
+}
+.container-header {
+	width: 80%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 0px;
+}
+.container-content {
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	margin-top: 45px;
+}
+.container-footer {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+	border-top: 1px solid #a1a1a1;
+	padding: 25px 0px;
+}
+h2 {
+	text-transform: uppercase;
+	font-family: "Montserrat", sans-serif;
+}
+.header {
+	width: 100%;
+	display: flex;
+	gap: 100px;
+	justify-content: center;
+	align-items: center;
+	border-bottom: 1px solid #a1a1a1;
+}
+.content {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.title-tagline {
+	position: relative;
+	text-align: center;
+	padding: 20px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.logo {
+	max-width: 80px;
+	position: relative;
+	right: 95px;
+	top: 0px;
+}
+.head-title {
+	font-size: 32px;
+	color: #4472c4;
+	text-shadow: 0px 0px 2px #6c6c6c;
+}
+.tagline {
+	font-family: "Raleway", sans-serif;
+	font-size: 20px;
+	font-style: italic;
+	color: #943634;
+}
+.title {
+	text-decoration: underline;
+	text-align: center;
+	font-size: 40px;
+}
+.detail {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.invoice-number {
+	font-family: "Courier New", monospace;
+}
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+th,
+td {
+	border: 1px solid black;
+	padding: 4px;
+	text-align: right;
+}
+thead > tr > th {
+	text-align: center;
+}
+.terms {
+	text-decoration: underline;
+}
+ol {
+	padding-left: 35px;
+	margin-top: -15px;
+}
+.container-verification {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-bottom: 25px;
+}
+.verification {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: row;
+	width: 80%;
+}
+.signature {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+.signature-heading,
+.signature-footer {
+	font-size: 14px;
+	font-style: italic;
+}
+.author-verification {
+	gap: 0px;
+}
+.img-sign {
+	width: 40%;
+	max-height: 100px;
+}
+.signature-footer {
+	border-top: 1px solid #000;
+}
+.goods,
+.address {
+	text-align: left;
+}
+.footer {
+	width: 842px;
+	position: absolute;
+	top: 950px;
+	margin-bottom: 25px;
+}
+.footer-content {
+	font-family: "Poppins", sans-serif;
+	font-size: 12px;
+	color: #31849b;
+}
+.exception {
+	width: 190px;
+}
+button#remove-button {
+	position: fixed;
+	bottom: 25px;
+	right: 45px;
+	padding: 15px 25px;
+	border: none;
+	border-radius: 5px;
+	background: #7eefb0;
+	font-family: "Montserrat", sans-serif;
+	font-size: 16px;
+	cursor: pointer;
+}

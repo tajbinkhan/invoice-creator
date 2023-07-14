@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'base/head.html' %}
+		{% block style %} {% endblock %}
+		<title>
+			{% block head_title %}{% endblock %} | {{ site_name }}
+		</title>
+	</head>
+
+	<body data-sidebar="dark" data-layout-mode="dark" {% if messages %} {% for message in messages %}
+		{% if message.tags == 'success' %} onload="showSuccessMessage('{{ message }}')" {% elif message.tags == 'info' %}
+		onload="showInfoMessage('{{ message }}')" {% else %} onload="showFailedMessage('{{ message }}')" {% endif %}
+		{% endfor %} {% endif %}>
+		<!-- <body data-layout="horizontal" data-topbar="dark"> -->
+		<div id="layout-wrapper">
+			{% include 'base/header.html' %}
+			{% include 'base/sidebar.html' %}
+			<div class="main-content">
+				<div class="page-content">
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-12">
+								<div class="page-title-box d-sm-flex align-items-center justify-content-between">
+									<h4 class="mb-sm-0 font-size-18">{% block breadcrumb %}{% endblock %}</h4>
+								</div>
+							</div>
+						</div>
+						{% block content %}
+						{% endblock %}
+					</div>
+				</div>
+				{% include 'base/footer.html' %}
+			</div>
+		</div>
+		{% comment %} {% include 'base/configuration.html' %} {% endcomment %}
+		<div class="rightbar-overlay"></div>
+		{% include 'base/scripts.html' %}
+		{% block script %}
+		{% endblock %}
+		{% include 'base/delete_confirmation.html' %}
+		{% include 'base/message.html' %}
+		{% include 'base/logout-script.html' %}
+	</body>
+
+</html>

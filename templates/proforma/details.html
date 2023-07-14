@@ -1,0 +1,157 @@
+{% load custom_filters %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@300&family=Raleway:wght@600&display=swap"
+			rel="stylesheet" />
+		<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+New&display=swap">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<link rel="stylesheet" href="{% static 'assets/custom/custom-proforma-pdf.min.css' %}">
+		<title>{{ proforma_invoice.client.client_name }} - {{ proforma_invoice.invoice_number }}</title>
+	</head>
+
+	<body>
+		<div id="htmlContent" style="background-image: url('{{ preferences.watermark.url }}');">
+			<div class="parent-element">
+				<div class="header">
+					<div class="container-header">
+						<img src="{{ preferences.logo.url }}" alt="tajmoho-international-logo" class="logo" />
+						<div class="title-tagline">
+							<h2 class="head-title">{{ preferences.title }}</h2>
+							<h6 class="tagline">{{ preferences.subtitle }}</h6>
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="container-verification">
+						<div class="verification">
+							<div class="signature author-verification">
+								<h2 class="signature-heading">FOR, {{ preferences.title }}</h2>
+								<img src="{{ preferences.signature.url }}" alt="" class="img-sign">
+								<h2 class="signature-footer exception">Authorized Signature</h2>
+							</div>
+							<div class="signature">
+								<h2 class="signature-heading">ACCEPTED BY THE BUYER</h2>
+								<h2 class="signature-footer">Authorized Signature</h2>
+							</div>
+						</div>
+					</div>
+					<div class="container-footer">
+						<h6 class="footer-content">
+							{{ preferences.address }}
+						</h6>
+						<h6 class="footer-content">
+							Contact: {{ preferences.contact }}, Email Id:
+							{{ preferences.email_address }}
+						</h6>
+					</div>
+				</div>
+			</div>
+			<div class="content">
+				<div class="container-content">
+					<h2 class="title">PROFORMA INVOICE</h2>
+					<div class="detail">
+						<p class="invoice-number">PROFORMA INVOICE NO: {{ proforma_invoice.invoice_number }}</p>
+						<p class="invoice-date">Date: {{ proforma_invoice.date|date:"d/m/Y" }}</p>
+					</div>
+					<table>
+						<tbody>
+							<tr>
+								<td class="address">
+									To,<br />
+									<strong>{{ proforma_invoice.client.client_name }}</strong><br />
+									{{ proforma_invoice.client.office_address }}
+								</td>
+								<td class="address">
+									Beneficiary,<br />
+									<strong>{{ preferences.title }}</strong><br />
+									{{ preferences.address }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<table>
+						<thead>
+							<tr>
+								<th class="index">No.</th>
+								<th class="description">Description of goods</th>
+								<th class="quantity">Quantity</th>
+								<th class="price">Unit Price</th>
+								<th class="amount">Total Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for good in proforma_invoice.proforma_goods.all %}
+							<tr>
+								<td>{{ forloop.counter }}.</td>
+								<td class="goods">{{ good.product }}</td>
+								<td>{{ good.quantity|comma_format }} {{ good.unit }}</td>
+								<td>
+									{% if proforma_invoice.currency == 'USD' %}
+									${{ good.unit_price|comma_format }}
+									{% else %}
+									{{ proforma_invoice.currency }} {{ good.unit_price|comma_format }}
+									{% endif %}
+								</td>
+								<td>
+									{% if proforma_invoice.currency == 'USD' %}
+									${{ good.calculate_total_value|comma_format }}
+									{% else %}
+									{{ proforma_invoice.currency }} {{ good.calculate_total_value|comma_format }}
+									{% endif %}
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="4">Total</td>
+								<td>
+									{% if proforma_invoice.custom_total_amount %}
+									{% if proforma_invoice.currency == 'USD' %}
+									${{ proforma_invoice.custom_total_amount|custom_total }}
+									{% else %}
+									{{ proforma_invoice.currency }} {{ proforma_invoice.custom_total_amount|custom_total }}
+									{% endif %}
+									{% elif proforma_invoice.calculate_total_goods_value %}
+									{% if proforma_invoice.currency == 'USD' %}
+									${{ proforma_invoice.calculate_total_goods_value|comma_format }}
+									{% else %}
+									{{ proforma_invoice.currency }} {{ proforma_invoice.calculate_total_goods_value|comma_format }}
+									{% endif %}
+									{% endif %}
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+					<p>(Say Total {{ proforma_invoice.currency }} <span
+							style="text-transform: capitalize;">{{ number2words }}</span> Only)</p>
+					<h3 class="terms">TERMS AND CONDITIONS</h3>
+					{{ description.terms_conditions|safe }}
+				</div>
+			</div>
+		</div>
+		<button id="remove-button" onclick="printSpecificPart()">
+			<i class="fa-solid fa-print"></i>
+			<span class="print">Print</span>
+		</button>
+		<script>
+			function printSpecificPart() {
+				var elementToPrint = document.getElementById('htmlContent');
+				document.getElementById('remove-button').style.display = "none";
+				window.print();
+			}
+			window.addEventListener('afterprint', function () {
+				document.getElementById('remove-button').style.display = "block";
+			});
+		</script>
+	</body>
+
+</html>

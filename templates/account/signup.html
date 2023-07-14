@@ -1,0 +1,100 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% load crispy_forms_tags %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Register | Tajmoho International" %}{% endblock %}
+
+{% block content %}
+{% get_providers as socialaccount_providers %}
+<div class="account-pages my-5 pt-sm-5">
+	<div class="container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-6 col-xl-5">
+				<div class="card overflow-hidden">
+					<div class="bg-primary bg-soft">
+						<div class="row">
+							<div class="col-7">
+								<div class="text-primary p-4">
+									<h5 class="text-primary">Free Register</h5>
+									<p>You can register. But your account will be inactivate. We will verify your account then activate it
+										manually.</p>
+								</div>
+							</div>
+							<div class="col-5 align-self-end">
+								<img src="{% static 'assets/images/profile-img.png' %}" alt="" class="img-fluid">
+							</div>
+						</div>
+					</div>
+					<div class="card-body pt-0">
+						<div>
+							<a href="{% url 'dashboard' %}">
+								<div class="avatar-md profile-user-wid mb-4">
+									<span class="avatar-title rounded-circle bg-light">
+										{% if global_preferences.logo %}
+										<img src="{{ global_preferences.logo.url }}" alt="" class="rounded-circle" height="72" width="72" />
+										{% else %}
+										<img src="{% static 'assets/images/logo.svg' %}" alt="" class="rounded-circle" height="72"
+											width="72" />
+										{% endif %}
+									</span>
+								</div>
+							</a>
+						</div>
+						<div class="p-2">
+							<form class="needs-validation" novalidate method="post" action="{% url 'account_signup' %}">
+								{% csrf_token %}
+								{{ form|crispy }}
+								{% if redirect_field_value %}
+								<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+								{% endif %}
+								<div class="mt-4 d-grid">
+									<button class="btn btn-primary waves-effect waves-light" type="submit">{% trans "Register" %}</button>
+								</div>
+
+								{% if socialaccount_providers %}
+								<div class="mt-4 text-center">
+									<h5 class="font-size-14 mb-3">Sign up using</h5>
+
+									<ul class="list-inline">
+										{% include "socialaccount/snippets/provider_list.html" with process="login" %}
+										{% include "socialaccount/snippets/login_extra.html" %}
+									</ul>
+								</div>
+								{% endif %}
+
+								<div class="mt-4 text-center">
+									<p class="mb-0">By registering you agree to the Tajmoho International <a href="#"
+											class="text-primary">Terms of
+											Use</a></p>
+								</div>
+							</form>
+						</div>
+
+					</div>
+				</div>
+				<div class="mt-5 text-center">
+					<div>
+						<p>
+							<p>{% trans "Already have an account ? " %}<a href="{% url 'account_login' %}"
+									class="fw-medium text-primary"> {% trans "Login" %}</a>
+							</p>
+						</p>
+						<p>
+							©
+							<script>
+								document.write(new Date().getFullYear());
+							</script>
+							Tajmoho International. Design & Develop by <a href="https://webphics.com/" target="_blank"
+								class="fw-medium text-primary">Webphics</a>
+						</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% endblock %}

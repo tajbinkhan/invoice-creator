@@ -1,0 +1,65 @@
+<div class="vertical-menu">
+	<div data-simplebar class="h-100">
+		<!--- Sidemenu -->
+		<div id="sidebar-menu">
+			<!-- Left Menu Start -->
+			<ul class="metismenu list-unstyled" id="side-menu">
+				<li class="menu-title">Menu</li>
+
+				<li {% if request.resolver_match.url_name == 'dashboard' %}class="mm-active" {% endif %}>
+					<a href="{% url 'dashboard' %}"
+						class="waves-effect {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+						<i class="bx bx-home-circle"></i>
+						<span>Dashboard</span>
+					</a>
+				</li>
+
+				<li {% if request.resolver_match.url_name == 'proforma_invoice' %}class="mm-active" {% endif %}>
+					<a href="{% url 'proforma_invoice' %}"
+						class="waves-effect {% if request.resolver_match.url_name == 'proforma_invoice' %}active{% endif %}">
+						<i class="bx bx-file"></i>
+						<span>Proforma Invoice</span>
+					</a>
+				</li>
+
+				<li>
+					<a href="{% url 'bill_invoice' %}" class="waves-effect">
+						<i class="bx bx-receipt"></i>
+						<span>Bill Invoice</span>
+					</a>
+				</li>
+
+				<li class="menu-title">Clients</li>
+
+				<li {% if request.resolver_match.url_name == 'clients' %}class="mm-active" {% endif %}>
+					<a href="{% url 'clients' %}"
+						class="waves-effect {% if request.resolver_match.url_name == 'clients' %}active{% endif %}">
+						<i class="mdi mdi-account-tie"></i>
+						<span>Clients</span>
+					</a>
+				</li>
+
+				<li class="menu-title">Description</li>
+
+				<li {% if request.resolver_match.url_name == 'description' %}class="mm-active" {% endif %}>
+					<a href="{% url 'description' %}"
+						class="waves-effect {% if request.resolver_match.url_name == 'description' %}active{% endif %}">
+						<i class="mdi mdi-notebook"></i>
+						<span>Description</span>
+					</a>
+				</li>
+
+				<li class="menu-title">Preferences</li>
+
+				<li {% if request.resolver_match.url_name == 'preferences' %}class="mm-active" {% endif %}>
+					<a href="{% url 'preferences' %}"
+						class="waves-effect {% if request.resolver_match.url_name == 'preferences' %}active{% endif %}">
+						<i class="mdi mdi-cogs"></i>
+						<span>Preferences</span>
+					</a>
+				</li>
+
+		</div>
+		<!-- Sidebar -->
+	</div>
+</div>

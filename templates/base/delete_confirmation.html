@@ -1,0 +1,19 @@
+<script>
+	function handleDelete(name) {
+		swal
+			.fire({
+				title: `Are you sure to delete ${name}?`,
+				text: "You won't be able to revert this!",
+				icon: "warning",
+				showCancelButton: !0,
+				confirmButtonColor: "#34c38f",
+				cancelButtonColor: "#f46a6a",
+				confirmButtonText: "Yes, delete it!",
+			})
+			.then((willDelete) => {
+				if (willDelete.isConfirmed) {
+					document.getElementById("delete-form").submit();
+				}
+			});
+	}
+</script>

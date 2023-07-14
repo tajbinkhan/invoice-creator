@@ -1,0 +1,23 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+
+	<head>
+		{% include 'base/head.html' %}
+		<title>
+			{% block head_title %}{% endblock %} | {{ site_name }}
+		</title>
+		{% block extra_head %}{% endblock %}
+	</head>
+
+	<body {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+		onload="showSuccessMessage('{{ message }}')" {% elif message.tags == 'info' %}
+		onload="showInfoMessage('{{ message }}')" {% else %} onload="showFailedMessage('{{ message }}')" {% endif %}
+		{% endfor %} {% endif %}>
+		{% block content %}{% endblock %}
+		{% include 'base/scripts.html' %}
+		{% include 'base/message.html' %}
+		{% block extra_body %}{% endblock %}
+	</body>
+
+</html>

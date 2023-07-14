@@ -1,0 +1,20 @@
+{% load i18n %}
+
+<div class="mt-5 text-center">
+	<div>
+		<p>
+			{% trans "Don't have an account ?" %}
+			<a href="{% url 'account_signup' %}" class="fw-medium text-primary">
+				{% trans "Signup now" %}
+			</a>
+		</p>
+		<p>
+			©
+			<script>
+				document.write(new Date().getFullYear());
+			</script>
+			{% blocktrans %}Tajmoho International. Design & Develop by <a href="https://webphics.com/" target="_blank"
+				class="fw-medium text-primary">Webphics</a>{% endblocktrans %}
+		</p>
+	</div>
+</div>

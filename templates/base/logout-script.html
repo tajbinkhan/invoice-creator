@@ -1,0 +1,34 @@
+<script>
+	function account_logout_popup() {
+		swal
+			.fire({
+				position: "top",
+				title: "Logout",
+				text: "Are you sure you want to log out?",
+				icon: "warning",
+				showCancelButton: !0,
+				confirmButtonColor: "#34c38f",
+				cancelButtonColor: "#f46a6a",
+				confirmButtonText: "Logout",
+			})
+			.then(function (willLogout) {
+				if (willLogout.isConfirmed) {
+					var url = "/accounts/logout/";
+					var form = document.createElement("form");
+					form.method = "POST";
+					form.action = url;
+
+					var csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0]
+						.value;
+					var csrfInput = document.createElement("input");
+					csrfInput.setAttribute("type", "hidden");
+					csrfInput.setAttribute("name", "csrfmiddlewaretoken");
+					csrfInput.value = csrfToken;
+
+					form.appendChild(csrfInput);
+					document.body.appendChild(form);
+					form.submit();
+				}
+			});
+	}
+</script>

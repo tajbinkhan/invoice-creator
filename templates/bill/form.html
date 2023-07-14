@@ -1,0 +1,126 @@
+{% extends 'base/index.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% crispy form %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'assets/custom/custom-form.min.css' %}" />
+{% endblock %}
+{% block head_title %} Bill Invoice Form {% endblock %}
+{% block breadcrumb %} Bill Invoice Form {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-xl-12">
+		<div class="card">
+			<div class="card-body">
+				<h4 class="card-title">{{ head_title }}</h4>
+				<p class="card-subtitle">
+					If you want to add a new client, you can do that by clicking this
+					<a href="{% url 'add_client' %}" target="_blank">link</a>. The client
+					data will be updated automatically. No need to refresh the page.
+				</p>
+				<hr class="mb-4" />
+
+				<form method="POST">
+					{% csrf_token %}
+					<div class="row">
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.invoice_number|as_crispy_field }}
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.date|as_crispy_field }}
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.client|as_crispy_field }}
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.currency|as_crispy_field }}
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.description|as_crispy_field }}
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-6">
+							{{ form.custom_total_amount|as_crispy_field }}
+						</div>
+					</div>
+					{{ formset.management_form }}
+					<div class="card border">
+						<div class="card-body">
+							<p id="instruction">
+								You can add goods by clicking the
+								<strong class="text-success">Add Goods</strong> button
+							</p>
+							<div id="goods-form">
+								{% for form in formset %}
+								<div class="row goods-list">
+									{{ form.id }}
+									<div class="col-sm-12 col-md-6 col-lg-3">
+										{{ form.color|as_crispy_field }}
+									</div>
+									<div class="col-sm-12 col-md-6 col-lg-3">
+										{{ form.count|as_crispy_field }}
+									</div>
+									<div class="col-sm-12 col-md-6 col-lg-3">
+										{{ form.quantity|as_crispy_field }}
+									</div>
+									<div class="col-sm-12 col-md-6 col-lg-3">
+										{{ form.unit|as_crispy_field }}
+									</div>
+									<div class="col-sm-12 col-md-6 col-lg-3">
+										{{ form.unit_price|as_crispy_field }}
+									</div>
+									<div class="col-sm-12 col-md-12 col-lg-12">
+										{{ form.DELETE|as_crispy_field }}
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+							<div id="empty-form" class="hidden">
+								{{ formset.empty_form|crispy }}
+							</div>
+							<button id="add-goods" class="btn btn-primary waves-effect waves-light w-md" type="button">
+								Add Goods
+							</button>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary w-md">Submit</button>
+				</form>
+			</div>
+			<!-- end card body -->
+		</div>
+		<!-- end card -->
+	</div>
+	<!-- end col -->
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static 'assets/custom/custom-bill-form.min.js' %}"></script>
+<script>
+	$(".clientpicker").select2({
+		ajax: {
+			url: "{% url 'client_name_api' %}",
+			dataType: "json",
+			data: function (params) {
+				return {
+					q: params.term,
+				};
+			},
+			processResults: function (data) {
+				return {
+					results: $.map(data, function (item) {
+						return {
+							id: item.id,
+							text: item.client_name,
+						};
+					}),
+				};
+			},
+		},
+	});
+</script>
+
+{% endblock %}

@@ -1,0 +1,146 @@
+{% load custom_filters %}
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Poppins:wght@300&family=Raleway:wght@600&display=swap"
+			rel="stylesheet" />
+		<link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+New&display=swap">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+		<link rel="stylesheet" href="{% static 'assets/custom/custom-bill-pdf.min.css' %}">
+		<title>{{ bill_invoice.client.client_name }} - {{ bill_invoice.invoice_number }}</title>
+	</head>
+
+	<body>
+		<div id="htmlContent" style="background-image: url('{{ preferences.watermark.url }}');">
+			<div class="parent-element">
+				<div class="header">
+					<div class="container-header">
+						<img src="{{ preferences.logo.url }}" alt="tajmoho-international-logo" class="logo" />
+						<div class="title-tagline">
+							<h2 class="head-title">{{ preferences.title }}</h2>
+							<h6 class="tagline">{{ preferences.subtitle }}</h6>
+						</div>
+					</div>
+				</div>
+				<div class="footer">
+					<div class="container-verification">
+						<div class="verification">
+							<div class="signature author-verification">
+								<h2 class="signature-heading">FOR, {{ preferences.title }}</h2>
+								<img src="{{ preferences.signature.url }}" alt="" class="img-sign">
+								<h2 class="signature-footer exception">Authorized Signature</h2>
+							</div>
+						</div>
+					</div>
+					<div class="container-footer">
+						<h6 class="footer-content">
+							{{ preferences.address }}
+						</h6>
+						<h6 class="footer-content">
+							Contact: {{ preferences.contact }}, Email Id:
+							{{ preferences.email_address }}
+						</h6>
+					</div>
+				</div>
+			</div>
+			<div class="content">
+				<div class="container-content">
+					<h2 class="title">BILL</h2>
+					<div class="detail">
+						<h2 class="invoice-number"><strong>Bill NO: {{ bill_invoice.invoice_number }}</strong></h2>
+						<p class="invoice-date">Date: {{ bill_invoice.date|date:"d/m/Y" }}</p>
+					</div>
+					<table>
+						<tbody>
+							<tr>
+								<td class="address">
+									To,<br />
+									<strong>{{ bill_invoice.client.client_name }}</strong><br />
+									{{ bill_invoice.client.office_address }}
+								</td>
+								<td class="address">
+									Beneficiary,<br />
+									<strong>{{ preferences.title }}</strong><br />
+									{{ preferences.address }}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<h2 class="invoice-number">Description: - {{ bill_invoice.description }}</h2>
+					<table>
+						<thead>
+							<tr>
+								<th class="index">No.</th>
+								<th class="description">Color</th>
+								<th class="description">Count</th>
+								<th class="quantity">Quantity</th>
+								<th class="price">Unit Price</th>
+								<th class="amount">Total Amount</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for good in bill_invoice.bill_goods.all %}
+							<tr>
+								<td>{{ forloop.counter }}.</td>
+								<td class="goods">{{ good.color }}</td>
+								<td>{{ good.count }}</td>
+								<td>{{ good.quantity|comma_format }} {{ good.unit }}</td>
+								<td>
+									{{ good.unit_price|comma_format }}
+								</td>
+								<td>
+									{{ good.calculate_total_value|comma_format }}
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5">Total</td>
+								<td>
+									{% if bill_invoice.custom_total_amount %}
+									{% if bill_invoice.currency == 'USD' %}
+									${{ bill_invoice.custom_total_amount|custom_total }}
+									{% else %}
+									{{ bill_invoice.currency }} {{ bill_invoice.custom_total_amount|custom_total }}
+									{% endif %}
+									{% elif bill_invoice.calculate_total_goods_value %}
+									{% if bill_invoice.currency == 'USD' %}
+									${{ bill_invoice.calculate_total_goods_value|comma_format }}
+									{% else %}
+									{{ bill_invoice.currency }} {{ bill_invoice.calculate_total_goods_value|comma_format }}
+									{% endif %}
+									{% endif %}
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+					<p>(Say Total {{ bill_invoice.currency }} <span style="text-transform: capitalize;">{{ number2words }}</span>
+						Only)</p>
+				</div>
+			</div>
+		</div>
+		<button id="remove-button" onclick="printSpecificPart()">
+			<i class="fa-solid fa-print"></i>
+			<span class="print">Print</span>
+		</button>
+		<script>
+			function printSpecificPart() {
+				var elementToPrint = document.getElementById('htmlContent');
+				document.getElementById('remove-button').style.display = "none";
+				window.print();
+			}
+			window.addEventListener('afterprint', function () {
+				document.getElementById('remove-button').style.display = "block";
+			});
+		</script>
+	</body>
+
+</html>

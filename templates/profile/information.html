@@ -1,0 +1,93 @@
+{% load static %}
+
+<div class="col-xl-3">
+	<div class="card">
+		<div class="card-body">
+			<h4><i class="fas fa-info-circle me-2"></i> Your Information</h4>
+			<p>All your information will show here. You can update your information as your need.</p>
+			{% if profile_picture %}
+			<img src="{{ profile_picture.url }}" class="p-1 bg-white rounded-pill" alt="{{ profile_picture }}" width="100" />
+			{% else %}
+			<img src="{% static 'assets/img/boy.png' %}" class="p-1 bg-white rounded-pill" alt="Default Profile Picture"
+				width="100" />
+			{% endif %}
+			{% if full_name %}
+			<h5 class="mt-4">
+				Full Name
+			</h5>
+			<p>{{ full_name }}</p>
+			{% endif %}
+			{% if request.user.email %}
+			<h5 class="mt-4">
+				Email Address
+			</h5>
+			<p>{{ request.user.email }}</p>
+			{% endif %}
+			<h5 class="mt-4">
+				User Role
+			</h5>
+			<p>
+				<span>Active: {% if request.user.is_active %}Yes{% else %}No{% endif %}</span><br>
+				<span>Staff: {% if request.user.is_staff %}Yes{% else %}No{% endif %}</span><br>
+				<span>Superuser: {% if request.user.is_superuser %}Yes{% else %}No{% endif %}</span>
+			</p>
+			<h5 class="mt-4">
+				Date Joined
+			</h5>
+			<p>{{ request.user.date_joined }}</p>
+			<h5 class="mt-4">
+				Last Login
+			</h5>
+			<p>{{ request.user.last_login }}</p>
+			<a href="{% url 'socialaccount_connections' %}" class="btn btn-primary waves-effect waves-light">Add Social
+				Application</a>
+			<button class="btn btn-danger waves-effect waves-light" id="delete-btn">Delete Account</button>
+		</div>
+	</div>
+</div>
+
+{% block script %}
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		document.querySelector('#delete-btn').addEventListener('click', function () {
+			Swal.fire({
+				title: 'Confirm Account Deletion',
+				text: 'Are you sure you want to delete your account?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonText: 'Delete',
+				cancelButtonText: 'Cancel',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					// Submit the form via AJAX request
+					fetch("{% url 'delete_account' %}", {
+							method: 'POST',
+							headers: {
+								'X-CSRFToken': '{{ csrf_token }}',
+							},
+						})
+						.then(response => response.json())
+						.then(data => {
+							// Handle the response
+							if (data.success) {
+								Swal.fire('Account Deleted', 'Your account has been deleted.', 'success').then(() => {
+									// Redirect or perform any other action
+									window.location.href = "{% url 'dashboard' %}";
+								});
+							} else {
+								Swal.fire('Error',
+									'An error occurred while deleting the account. Superuser cannot delete own account.',
+									'error');
+							}
+						})
+						.catch(error => {
+							console.error('Error:', error);
+							Swal.fire('Error', 'An error occurred while deleting the account. Main', 'error');
+						});
+				}
+			});
+		});
+	});
+</script>
+
+{% endblock  %}

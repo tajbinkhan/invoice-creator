@@ -1,0 +1,89 @@
+{% load static %}
+
+<header id="page-topbar">
+	<div class="navbar-header">
+		<div class="d-flex">
+			<!-- LOGO -->
+			<div class="navbar-brand-box">
+				<a href="{% url 'dashboard' %}" class="logo logo-light">
+					<span class="logo-sm">
+						{% if global_settings.mobile_logo %}
+						<img src="{{ global_settings.mobile_logo.url }}" alt="" height="22" />
+						{% else %}
+						<img src="{% static 'assets/images/logo-light.svg' %}" alt="" height="22" />
+						{% endif %}
+					</span>
+					<span class="logo-lg">
+						{% if global_settings.website_logo %}
+						<img src="{{ global_settings.website_logo.url }}" alt="" height="50" />
+						{% else %}
+						<img src="{% static 'assets/images/logo-light.png' %}" alt="" height="19" />
+						{% endif %}
+					</span>
+				</a>
+			</div>
+
+			<button type="button" class="btn btn-sm px-3 font-size-16 header-item waves-effect" id="vertical-menu-btn">
+				<i class="fa fa-fw fa-bars"></i>
+			</button>
+		</div>
+
+		<div class="d-flex">
+			<div class="dropdown d-none d-lg-inline-block ms-1">
+				<button type="button" class="btn header-item noti-icon waves-effect" data-bs-toggle="fullscreen">
+					<i class="bx bx-fullscreen"></i>
+				</button>
+			</div>
+
+			<div class="dropdown d-inline-block">
+				<button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+					data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{% if profile_picture %}
+					<img class="rounded-circle header-profile-user" src="{{ profile_picture.url }}" alt="Header Avatar" />
+					{% else %}
+					<img class="rounded-circle header-profile-user" src="{% static 'assets/img/boy.png' %}" alt="Header Avatar" />
+					{% endif %}
+					{% if request.user.first_name and request.user.last_name %}
+					<span class="d-none d-xl-inline-block ms-1">{{ request.user.first_name }}</span>
+					{% else %}
+					<span class="d-none d-xl-inline-block ms-1">{{ request.user.username }}</span>
+					{% endif %}
+					<i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
+				</button>
+				<div class="dropdown-menu dropdown-menu-end">
+					<!-- item-->
+					<a class="dropdown-item" href="{% url 'profile' %}"><i
+							class="mdi mdi-account-circle font-size-16 align-middle me-1"></i>
+						<span>Profile</span></a>
+					<a class="dropdown-item" href="{% url 'account_email' %}"><i
+							class="mdi mdi-email font-size-16 align-middle me-1"></i>
+						<span>Change Email</span></a>
+					<a class="dropdown-item" href="{% url 'account_change_password' %}"><i
+							class="mdi mdi-lock-reset font-size-16 align-middle me-1"></i>
+						<span>Change Password</span></a>
+					{% if user.is_superuser %}
+					<a class="dropdown-item d-block" href="{% url 'settings' %}">
+						<i class="mdi mdi-cog-sync-outline font-size-16 align-middle me-1"></i>
+						<span>Settings</span></a>
+					<a class="dropdown-item d-block" href="/admin/" target="_blank">
+						<i class="mdi mdi-account-tie font-size-16 align-middle me-1"></i>
+						<span>Admin Panel</span></a>
+					{% endif %}
+					<div class="dropdown-divider"></div>
+					{% csrf_token %}
+					<a class="dropdown-item text-danger" href="#" onclick="account_logout_popup(); return false;"><i
+							class="mdi mdi-power-standby font-size-16 align-middle me-1 text-danger"></i>
+						<span>Logout</span></a>
+				</div>
+			</div>
+
+			{% comment %}
+			<div class="dropdown d-inline-block">
+				<button type="button" class="btn header-item noti-icon right-bar-toggle waves-effect">
+					<i class="bx bx-cog bx-spin"></i>
+				</button>
+			</div>
+			{% endcomment %}
+		</div>
+	</div>
+</header>

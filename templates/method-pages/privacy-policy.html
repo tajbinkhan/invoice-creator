@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'base/head.html' %}
+		<title>
+			{% block head_title %} Privacy Policy {% endblock %} | {{ site_name }}
+		</title>
+	</head>
+
+	<body>
+		<div class="container py-5">
+			{{ global_settings.privacy_policy|safe }}
+		</div>
+		{% include 'base/scripts.html' %}
+	</body>
+
+</html>

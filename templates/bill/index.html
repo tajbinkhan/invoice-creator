@@ -1,0 +1,154 @@
+{% extends 'base/index.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block head_title %} Bill Invoice {% endblock %}
+{% block breadcrumb %} Bill Invoice {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row mb-3">
+					<div class="col-9">
+						<h4 class="card-title">Bill Invoice</h4>
+						<p class="card-subtitle">
+							All your invoice are being shown here. You can download any
+							invoice in PDF format.
+						</p>
+					</div>
+					<div class="col-3">
+						<a href="{% url 'add_bill_invoice' %}" class="btn btn-primary waves-effect waves-light float-end">Generate
+							New Invoice</a>
+					</div>
+				</div>
+				<hr class="mb-4" />
+
+				<table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+					<thead>
+						<tr>
+							<th>Invoice Number</th>
+							<th>Client</th>
+							<th>Goods</th>
+							<th>Total Price</th>
+							<th>Date</th>
+							<th>Created</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- end col -->
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'assets/custom/custom-js.min.js' %}"></script>
+
+<script>
+	$(document).ready(function () {
+		var table = $("#datatable").DataTable({
+			lengthMenu: [10, 20, 30, 40, 50],
+			responsive: true,
+			serverSide: false,
+			order: [
+				[5, "desc"]
+			],
+			ordering: true,
+			ajax: {
+				url: "{% url 'list_bill_invoice_api' %}",
+				dataSrc: 'invoice_data',
+			},
+			columnDefs: [{
+				targets: 6,
+				orderable: false,
+			}],
+			columns: [{
+					data: "invoice_number",
+					searchable: true,
+				},
+				{
+					data: "client",
+					searchable: true,
+				},
+				{
+					data: null,
+					searchable: true,
+					render: function (data, type, row) {
+						var goodsHTML = '';
+
+						for (var i = 0; i < data.goods_data.length; i++) {
+							var goodsDetails = data.goods_data[i]
+
+							goodsHTML += goodsDetails.color + ' (Qty=' + goodsDetails.quantity + goodsDetails.unit +
+								'), Price=' + formatNumber(goodsDetails.unit_price) + ' ' + data.currency + '<br>';
+						}
+						return goodsHTML;
+					}
+				},
+				{
+					data: null,
+					searchable: true,
+					render: function (data, type, row) {
+						var totalHTML = '';
+						if (type === 'display') {
+							if (data.custom_total_amount) {
+								totalHTML += data.currency + ' ' + formatNumber(Number(data.custom_total_amount));
+							} else {
+								totalHTML += data.currency + ' ' + formatNumber(data.calculate_total_goods_value);
+							}
+						}
+						return totalHTML;
+					}
+				},
+				{
+					data: "date",
+					searchable: true,
+				},
+				{
+					data: "created_at",
+					searchable: true,
+				},
+				{
+					data: null,
+					render: function (data, type, row, meta) {
+						var invoice_id = row.invoice_id;
+						var invoice_number = row.invoice_number;
+						var detailUrl = `/bill-invoice/${invoice_id}/`;
+						var updateUrl = `/bill-invoice/update/${invoice_id}/`;
+						var deleteUrl = `/bill-invoice/delete/${invoice_id}/`;
+						return `
+						<a href="${detailUrl}" target="_blank"
+							class="btn btn-primary waves-effect waves-light">
+							<i class="far fa-eye"></i>
+						</a>
+						<a href="${updateUrl}"
+							class="btn btn-success waves-effect waves-light">
+							<i class="mdi mdi-pencil"></i>
+						</a>
+						<form id="delete-form" method="POST" action="${deleteUrl}">
+							{% csrf_token %}
+							<button type="button" class="btn btn-danger waves-effect waves-light"
+								onclick="handleDelete('${invoice_number}')">
+								<i class="mdi mdi-trash-can"></i>
+							</button>
+						</form>`;
+					},
+					searchable: false,
+				},
+			]
+		});
+
+		$(".dataTables_length select").addClass("form-select form-select-sm");
+	});
+</script>
+
+{% endblock %}

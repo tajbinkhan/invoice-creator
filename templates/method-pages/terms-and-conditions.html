@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'base/head.html' %}
+		<title>
+			{% block head_title %} Terms & Conditions {% endblock %} | {{ site_name }}
+		</title>
+	</head>
+
+	<body>
+		<div class="container py-5">
+			{{ global_settings.terms_conditions|safe }}
+		</div>
+		{% include 'base/scripts.html' %}
+	</body>
+
+</html>

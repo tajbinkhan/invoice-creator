@@ -1,0 +1,88 @@
+{% extends 'base/index.html' %}
+
+{% block head_title %} Preferences {% endblock %}
+{% block breadcrumb %} Preferences {% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-xl-9">
+		<div class="card">
+			<div class="card-body">
+				<h4><i class="far fa-user fa-fw"></i> General</h4>
+				<p>
+					View and update your general account information and
+					settings.
+				</p>
+				<div class="list-group list-group-flush border">
+					<div class="list-group-item d-flex align-items-center">
+						<div class="flex-1 text-break">
+							<div>Company Name</div>
+							<div class="text-inverse text-opacity-50">
+								{{ preferences.title }}
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item d-flex align-items-center">
+						<div class="flex-1 text-break">
+							<div>Company Tagline</div>
+							<div class="text-inverse text-opacity-50">
+								{{ preferences.subtitle }}
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item d-flex align-items-center">
+						<div class="flex-1 text-break">
+							<div>Company Address</div>
+							<div class="text-inverse text-opacity-50">
+								{{ preferences.address }}
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item d-flex align-items-center">
+						<div class="flex-1 text-break">
+							<div>Company Phone Number</div>
+							<div class="text-inverse text-opacity-50">
+								{{ preferences.contact }}
+							</div>
+						</div>
+					</div>
+					<div class="list-group-item d-flex align-items-center">
+						<div class="flex-1 text-break">
+							<div>Company Email Address</div>
+							<div class="text-inverse text-opacity-50">
+								<a href="mailto:{{ preferences.email_address }}">{{ preferences.email_address }}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="{% url 'update_preferences' %}" class="btn btn-primary waves-effect waves-light w-md mt-3">Update
+					Preferences</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xl-3">
+		<div class="card">
+			<div class="card-body">
+				<h4><i class="far fa-building me-2"></i> Company Logo</h4>
+				<p>This is your uploaded company logo.</p>
+				<img src="{{ preferences.logo.url }}" class="p-1 bg-white rounded-pill" alt="{{ preferences.logo.url }}"
+					width="100" />
+				<h4 class="mt-4">
+					<i class="far fa-image me-2"></i> Watermark
+				</h4>
+				<p>This is your uploaded watermark.</p>
+				<img src="{{ preferences.watermark.url }}" class="p-1 bg-white rounded-pill" alt="{{ preferences.logo.url }}"
+					width="100" />
+				<h4 class="mt-4">
+					<i class="fas fa-pen-alt me-2"></i> Signature
+				</h4>
+				<p>This is your uploaded signature.</p>
+				<img src="{{ preferences.signature.url }}" class="bg-white img-thumbnail" alt="{{ preferences.signature.url }}"
+					width="100" />
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

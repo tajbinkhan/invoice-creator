@@ -1,0 +1,23 @@
+{% extends 'base/index.html' %}
+
+{% block head_title %} Description {% endblock %}
+{% block breadcrumb %} Description {% endblock %}
+
+{% block content %}
+
+<div class="card">
+	<div class="card-body">
+		<h4>Beneficiary Details</h4>
+		<p>
+			{{ description.beneficiary }}
+		</p>
+		<h4>Terms & Conditions</h4>
+		<p>
+			{{ description.terms_conditions|safe }}
+		</p>
+		<a href="{% url 'update_description' %}" class="btn btn-primary waves-effect waves-light w-md">Update
+			Description</a>
+	</div>
+</div>
+
+{% endblock %}

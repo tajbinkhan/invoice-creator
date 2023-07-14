@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'base/head.html' %}
+		<title>
+			{% block head_title %} Not Allowed 405 {% endblock %}
+		</title>
+	</head>
+
+	<body {% if messages %} {% for message in messages %} {% if message.tags == 'success' %}
+		onload="showSuccessMessage('{{ message }}')" {% elif message.tags == 'info' %}
+		onload="showInfoMessage('{{ message }}')" {% else %} onload="showFailedMessage('{{ message }}')" {% endif %}
+		{% endfor %} {% endif %}>
+		<div class="account-pages my-5 pt-5">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="text-center mb-5">
+							<h1 class="display-2 fw-medium">
+								4<i class="bx bx-buoy bx-spin text-primary display-3"></i>5
+							</h1>
+							<h4 class="text-uppercase">
+								Access Denied. You need to be a superuser to access that page.
+							</h4>
+							<div class="mt-5 text-center">
+								<a href="{% url 'profile' %}" class="btn btn-primary waves-effect waves-light">Go To Profile</a>
+								{% csrf_token %}
+								<a href="#" onclick="account_logout_popup(); return false;"
+									class="btn btn-primary waves-effect waves-light">Logout</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-md-8 col-xl-6">
+						<div>
+							<img src="{% static 'assets/images/error-img.png' %}" alt="" class="img-fluid" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- JAVASCRIPT -->
+		{% include 'base/scripts.html' %}
+		{% include 'base/message.html' %}
+		{% include 'base/logout-script.html' %}
+	</body>
+
+</html>
