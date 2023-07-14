@@ -9,9 +9,9 @@
 	<div class="card-body">
 		<div class="col-lg-12 mb-2">
 			<h4>Website Logo</h4>
-			<img src="{{ global_settings.website_logo.url }}" class="img-fluid img-thumbnail" width=200>
+			<img src="{{ global_settings.website_logo.url }}" class="img-fluid img-thumbnail border-white">
 			<h4 class="mt-2">Mobile Logo</h4>
-			<img src="{{ global_settings.mobile_logo.url }}" class="img-fluid img-thumbnail" width=200>
+			<img src="{{ global_settings.mobile_logo.url }}" class="img-fluid img-thumbnail border-white">
 		</div>
 		<a href="{% url 'update_settings' %}" class="btn btn-primary waves-effect waves-light w-md">Update Settings</a>
 		<a href="{% url 'terms_conditions' %}" class="btn btn-primary waves-effect waves-light w-md" target="_blank">View

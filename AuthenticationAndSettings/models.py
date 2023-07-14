@@ -2,6 +2,7 @@ import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
+from core.utils import optimize_image
 
 # Create your models here.
 def get_filename_ext(filepath):
@@ -30,6 +31,13 @@ def mobile_logo(instance, filename):
 class CustomUser(AbstractUser):
 	profile_picture = models.ImageField(upload_to=profile_picture, blank=True, null=True)
 
+	def save(self, *args, **kwargs):
+		try:
+			self.profile_picture = optimize_image(self.profile_picture, 100, 100)
+		except FileNotFoundError as e:
+			print(e)
+		super().save(*args, **kwargs)
+
 class Settings(models.Model):
 	terms_conditions = RichTextField(verbose_name='Website Terms and Conditions')
 	privacy_policy = RichTextField(verbose_name='Website Privacy Policy')
@@ -40,6 +48,14 @@ class Settings(models.Model):
 
 	class Meta:
 		verbose_name_plural = 'Settings'
+
+	def save(self, *args, **kwargs):
+		try:
+			self.website_logo = optimize_image(self.website_logo, 167, 167)
+			self.mobile_logo = optimize_image(self.mobile_logo, 23, 22)
+		except FileNotFoundError as e:
+			print(e)
+		super().save(*args, **kwargs)
 
 	def __str__(self):
 		return "Website Staff"

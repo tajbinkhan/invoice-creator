@@ -6,7 +6,7 @@
 			<h4><i class="fas fa-info-circle me-2"></i> Your Information</h4>
 			<p>All your information will show here. You can update your information as your need.</p>
 			{% if profile_picture %}
-			<img src="{{ profile_picture.url }}" class="p-1 bg-white rounded-pill" alt="{{ profile_picture }}" width="100" />
+			<img src="{{ profile_picture.url }}" class="p-1 bg-white rounded-pill img-fluid" alt="{{ profile_picture }}" />
 			{% else %}
 			<img src="{% static 'assets/img/boy.png' %}" class="p-1 bg-white rounded-pill" alt="Default Profile Picture"
 				width="100" />

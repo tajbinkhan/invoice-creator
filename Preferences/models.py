@@ -1,4 +1,5 @@
 import os
+from core.utils import optimize_image
 from django.db import models
 from ckeditor.fields import RichTextField
 
@@ -53,3 +54,12 @@ class Preferences(models.Model):
 
 	def __str__(self):
 		return self.title
+
+	def save(self, *args, **kwargs):
+		try:
+			self.logo = optimize_image(self.logo, 80, 80)
+			self.signature = optimize_image(self.signature, 178, 40)
+			self.watermark = optimize_image(self.watermark, 1200, 1200)
+		except FileNotFoundError as e:
+			print(e)
+		super(Preferences, self).save(*args, **kwargs)

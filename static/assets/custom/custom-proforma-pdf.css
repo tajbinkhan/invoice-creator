@@ -81,7 +81,9 @@ h2 {
 	gap: 5px;
 }
 .logo {
+	width: 100%;
 	max-width: 80px;
+	max-height: 76px;
 	position: relative;
 	right: 95px;
 	top: 0px;
@@ -148,8 +150,9 @@ ol {
 	gap: 0px;
 }
 .img-sign {
-	width: 40%;
-	max-height: 100px;
+	width: 100%;
+	max-width: 178px;
+	max-height: 40px;
 }
 .signature-footer {
 	border-top: 1px solid #000;
