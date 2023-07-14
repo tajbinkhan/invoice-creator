@@ -11,6 +11,10 @@
 			<img src="{% static 'assets/img/boy.png' %}" class="p-1 bg-white rounded-pill" alt="Default Profile Picture"
 				width="100" />
 			{% endif %}
+			<h5 class="mt-4">
+				Username
+			</h5>
+			<p>{{ request.user.username }}</p>
 			{% if full_name %}
 			<h5 class="mt-4">
 				Full Name
@@ -23,14 +27,6 @@
 			</h5>
 			<p>{{ request.user.email }}</p>
 			{% endif %}
-			<h5 class="mt-4">
-				User Role
-			</h5>
-			<p>
-				<span>Active: {% if request.user.is_active %}Yes{% else %}No{% endif %}</span><br>
-				<span>Staff: {% if request.user.is_staff %}Yes{% else %}No{% endif %}</span><br>
-				<span>Superuser: {% if request.user.is_superuser %}Yes{% else %}No{% endif %}</span>
-			</p>
 			<h5 class="mt-4">
 				Date Joined
 			</h5>
