@@ -1,0 +1,19 @@
+.hidden {
+	display: none;
+}
+
+.checkboxinput {
+	display: none;
+}
+
+.form-check {
+	width: 60%;
+}
+
+label.form-check-label {
+	margin-left: -20px;
+}
+
+.dynamic-proforma_goods > .mb-3 > .col-sm-12 > .form-check-label {
+	margin-left: 0px;
+}
