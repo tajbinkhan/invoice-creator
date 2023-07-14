@@ -141,7 +141,7 @@ dmypy.json
 cython_debug/
 
 # Media File
-media
+media/
 
 # VSCode
 .vscode
