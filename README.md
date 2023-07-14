@@ -49,24 +49,24 @@ Install Application with pip
 
 Clone the project.
 ```bash
-  git clone https://github.com/tajbinkhan/invoice-creator.git
+git clone https://github.com/tajbinkhan/invoice-creator.git
 ```
 Go to the project directory (if you are a windows user).
 ```bash
-  cd invoice-creator
+cd invoice-creator
 ```
 In command panel, run this command.
 ```bash
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 After successfull installation, you need to start the migration to create table in the database.
 ```bash
-  python manage.py makemigrations
-  python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
 ```
 After migration, start the server by running this command.
 ```bash
-  python manage.py runserver
+python manage.py runserver
 ```
 
 ## Tech Stack
