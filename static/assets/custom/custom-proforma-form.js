@@ -22,7 +22,7 @@ var deleteButtons = document.querySelectorAll(".form-check-label");
 for (var i = 0; i < deleteButtons.length; i++) {
 	const ignoreValue = deleteButtons[i].getAttribute("for");
 	if (ignoreValue != "id_proforma_goods-__prefix__-DELETE") {
-		deleteButtons[i].setAttribute("class", "btn btn-danger form-check-label");
+		deleteButtons[i].setAttribute("class", "btn btn-danger waves-effect waves-light w-md form-check-label");
 	}
 }
 
@@ -107,7 +107,7 @@ addMoreBtn.addEventListener("click", (event) => {
 
 	const deleteBtn = document.createElement("button");
 	deleteBtn.innerHTML = "Delete";
-	deleteBtn.classList.add("btn", "btn-danger");
+	deleteBtn.setAttribute("class", "btn btn-danger waves-effect waves-light w-md");
 	deleteBtn.addEventListener("click", () => {
 		const forms = document.getElementsByClassName("goods-list");
 		const totalFormsInput = document.getElementById(
@@ -196,17 +196,20 @@ addMoreBtn.addEventListener("click", (event) => {
 					}
 				}
 
+				var numberOfChildrenArray = Array.from(document.querySelectorAll(`#${convertToArray[i].id}`))[0].children.length
+
 				var getClassName = Array.from(
 					Array.from(
 						Array.from(document.querySelectorAll(`#${convertToArray[i].id}`))[0]
-							.children
-					)[6].children
+						.children
+					)[numberOfChildrenArray - 1].children
 				)[0];
+				console.log();
 				var getClassNameChildren = Array.from(
 					Array.from(
 						Array.from(document.querySelectorAll(`#${convertToArray[i].id}`))[0]
-							.children
-					)[6].children
+						.children
+					)[numberOfChildrenArray - 1].children
 				)[0].children;
 
 				var updatedGetClassName = getClassName.id.replace(/\d+/, i);

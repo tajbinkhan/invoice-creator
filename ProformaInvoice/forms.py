@@ -1,6 +1,8 @@
 from django import forms
 from datetime import datetime
 from django.conf import settings
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from .models import ProformaInvoice, ProformaInvoiceGoods, CURRENCY, UNIT
 
 class ProformaInvoiceForm(forms.ModelForm):
@@ -10,6 +12,7 @@ class ProformaInvoiceForm(forms.ModelForm):
 		exclude = ('invoice_id',)
 		help_texts = {
 			'custom_total_amount': '<i>Leave it empty if you want to generate automatically.</i>',
+			'client': '<i>You can add clients from <a href="/clients/add/" target="_blank">here</a>.</i>',
 		}
 		widgets = {
 			'invoice_number': forms.TextInput(attrs={

@@ -58,7 +58,7 @@ class Preferences(models.Model):
 	def save(self, *args, **kwargs):
 		try:
 			self.logo = optimize_image(self.logo, 80, 80)
-			self.signature = optimize_image(self.signature, 178, 40)
+			self.signature = optimize_image(self.signature, 178, 178)
 			self.watermark = optimize_image(self.watermark, 1200, 1200)
 		except FileNotFoundError as e:
 			print(e)
