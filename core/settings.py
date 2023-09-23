@@ -196,7 +196,7 @@ ACCOUNT_SIGNUP_REDIRECT_URL = "dashboard"
 SOCIALACCOUNT_EMAIL_VERIFICATION = ACCOUNT_EMAIL_VERIFICATION
 ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180
 
-ACCOUNT_ADAPTER = "AuthenticationAndSettings.adapter.CustomAccountAdapter"
+# ACCOUNT_ADAPTER = "AuthenticationAndSettings.adapter.CustomAccountAdapter"
 ACCOUNT_FORMS = {
 	"login": "AuthenticationAndSettings.forms.CustomLoginForm",
 }
